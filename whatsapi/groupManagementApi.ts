@@ -20,7 +20,7 @@ import { GroupCreatePayload } from '../models/groupCreatePayload';
 import { GroupUpdateDescriptionPayload } from '../models/groupUpdateDescriptionPayload';
 import { GroupUpdateNamePayload } from '../models/groupUpdateNamePayload';
 import { GroupUpdateParticipantsPayload } from '../models/groupUpdateParticipantsPayload';
-import { InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest } from '../models/instancesInstanceKeyGroupsGroupIdProfilePicPutRequest';
+import { SetGroupPictureRequest } from '../models/setGroupPictureRequest';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
 import { HttpBasicAuth, HttpBearerAuth, ApiKeyAuth, OAuth } from '../model/models';
@@ -95,13 +95,16 @@ export class GroupManagementApi {
     }
 
     /**
-     * Returns list of all groups in which you are admin.
-     * @summary Get admin groupss.
+     * Handles adding participants to a group. You must be admin in the group or the query will fail.
+     * @summary Add participant.
      * @param instanceKey Instance key
+     * @param groupId Group id of the group
+     * @param data Group update payload
      */
-    public async instancesInstanceKeyGroupsAdminGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/admin'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+    public async addParticipant (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/add'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
+            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
         const produces = ['*/*'];
@@ -115,7 +118,17 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsAdminGet.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling addParticipant.');
+        }
+
+        // verify required parameter 'groupId' is not null or undefined
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling addParticipant.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling addParticipant.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -123,12 +136,13 @@ export class GroupManagementApi {
         let localVarUseFormData = false;
 
         let localVarRequestOptions: localVarRequest.Options = {
-            method: 'GET',
+            method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
+            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -172,7 +186,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param data Group create payload
      */
-    public async instancesInstanceKeyGroupsCreatePost (instanceKey: string, data: GroupCreatePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async createGroup (instanceKey: string, data: GroupCreatePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/create'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -188,12 +202,12 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsCreatePost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling createGroup.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyGroupsCreatePost.');
+            throw new Error('Required parameter data was null or undefined when calling createGroup.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -246,12 +260,170 @@ export class GroupManagementApi {
         });
     }
     /**
+     * Demotes admins in groups. You must be admin in the group or the query will fail.
+     * @summary Demote participant.
+     * @param instanceKey Instance key
+     * @param groupId Group id of the group
+     * @param data Group update payload
+     */
+    public async demoteParticipant (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/demote'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
+            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling demoteParticipant.');
+        }
+
+        // verify required parameter 'groupId' is not null or undefined
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling demoteParticipant.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling demoteParticipant.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'PUT',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Returns list of all groups in which you are admin.
+     * @summary Get admin groups.
+     * @param instanceKey Instance key
+     */
+    public async getAdminGroups (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/admin'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling getAdminGroups.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'GET',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
      * Returns list of all groups with participants data. Set include_participants to false to exclude participants data.
      * @summary Get all groups.
      * @param instanceKey Instance key
      * @param includeParticipants Include participants data
      */
-    public async instancesInstanceKeyGroupsGet (instanceKey: string, includeParticipants?: 'false' | 'true', options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async getAllGroups (instanceKey: string, includeParticipants?: 'false' | 'true', options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -267,7 +439,7 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGet.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling getAllGroups.');
         }
 
         if (includeParticipants !== undefined) {
@@ -323,263 +495,12 @@ export class GroupManagementApi {
         });
     }
     /**
-     * Set if non-admins are allowed to send messages in groups
-     * @summary Set group announce.
-     * @param instanceKey Instance key
-     * @param announce Announce status
-     * @param groupId Group id of the group
-     */
-    public async instancesInstanceKeyGroupsGroupIdAnnouncePut (instanceKey: string, announce: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/announce'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
-            .replace('{' + 'announce' + '}', encodeURIComponent(String(announce)))
-            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdAnnouncePut.');
-        }
-
-        // verify required parameter 'announce' is not null or undefined
-        if (announce === null || announce === undefined) {
-            throw new Error('Required parameter announce was null or undefined when calling instancesInstanceKeyGroupsGroupIdAnnouncePut.');
-        }
-
-        // verify required parameter 'groupId' is not null or undefined
-        if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdAnnouncePut.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'PUT',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
-     * Leaves the specified group.
-     * @summary Leaves the group.
-     * @param instanceKey Instance key
-     * @param groupId Group id of the group
-     */
-    public async instancesInstanceKeyGroupsGroupIdDelete (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
-            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdDelete.');
-        }
-
-        // verify required parameter 'groupId' is not null or undefined
-        if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdDelete.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'DELETE',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
-     * Changes the group description
-     * @summary Set group description.
-     * @param instanceKey Instance key
-     * @param groupId Group id of the group
-     * @param data Group description data
-     */
-    public async instancesInstanceKeyGroupsGroupIdDescriptionPut (instanceKey: string, groupId: string, data: GroupUpdateDescriptionPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/description'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
-            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdDescriptionPut.');
-        }
-
-        // verify required parameter 'groupId' is not null or undefined
-        if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdDescriptionPut.');
-        }
-
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyGroupsGroupIdDescriptionPut.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'PUT',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-            body: ObjectSerializer.serialize(data, "GroupUpdateDescriptionPayload")
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
      * Fetches the group data.
      * @summary Get group.
      * @param instanceKey Instance key
      * @param groupId Group id of the group
      */
-    public async instancesInstanceKeyGroupsGroupIdGet (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async getGroup (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -596,12 +517,94 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdGet.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling getGroup.');
         }
 
         // verify required parameter 'groupId' is not null or undefined
         if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdGet.');
+            throw new Error('Required parameter groupId was null or undefined when calling getGroup.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'GET',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Gets a group info from an invite link. An invite link is a link that can be used to join a group. It is usually in the format https://chat.whatsapp.com/{invitecode}
+     * @summary Get group from invite link.
+     * @param instanceKey Instance key
+     * @param inviteLink The invite link to check
+     */
+    public async getGroupFromInviteLink (instanceKey: string, inviteLink: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/invite-info'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling getGroupFromInviteLink.');
+        }
+
+        // verify required parameter 'inviteLink' is not null or undefined
+        if (inviteLink === null || inviteLink === undefined) {
+            throw new Error('Required parameter inviteLink was null or undefined when calling getGroupFromInviteLink.');
+        }
+
+        if (inviteLink !== undefined) {
+            localVarQueryParameters['invite_link'] = ObjectSerializer.serialize(inviteLink, "string");
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -658,7 +661,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param groupId Group id of the group
      */
-    public async instancesInstanceKeyGroupsGroupIdInviteCodeGet (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async getGroupInviteCode (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/invite-code'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -675,12 +678,12 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdInviteCodeGet.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling getGroupInviteCode.');
         }
 
         // verify required parameter 'groupId' is not null or undefined
         if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdInviteCodeGet.');
+            throw new Error('Required parameter groupId was null or undefined when calling getGroupInviteCode.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -732,100 +735,13 @@ export class GroupManagementApi {
         });
     }
     /**
-     * Set if non-admins are allowed to change the group dp and other stuff
-     * @summary Set group locked.
-     * @param instanceKey Instance key
-     * @param locked Locked status
-     * @param groupId Group id of the group
-     */
-    public async instancesInstanceKeyGroupsGroupIdLockPut (instanceKey: string, locked: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/lock'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
-            .replace('{' + 'locked' + '}', encodeURIComponent(String(locked)))
-            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdLockPut.');
-        }
-
-        // verify required parameter 'locked' is not null or undefined
-        if (locked === null || locked === undefined) {
-            throw new Error('Required parameter locked was null or undefined when calling instancesInstanceKeyGroupsGroupIdLockPut.');
-        }
-
-        // verify required parameter 'groupId' is not null or undefined
-        if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdLockPut.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'PUT',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
-     * Changes the group name. The max limit is 22 chars
-     * @summary Set group name.
+     * Leaves the specified group.
+     * @summary Leaves the group.
      * @param instanceKey Instance key
      * @param groupId Group id of the group
-     * @param data Group name data
      */
-    public async instancesInstanceKeyGroupsGroupIdNamePut (instanceKey: string, groupId: string, data: GroupUpdateNamePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/name'
+    public async leaveGroup (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
         let localVarQueryParameters: any = {};
@@ -841,17 +757,12 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdNamePut.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling leaveGroup.');
         }
 
         // verify required parameter 'groupId' is not null or undefined
         if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdNamePut.');
-        }
-
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyGroupsGroupIdNamePut.');
+            throw new Error('Required parameter groupId was null or undefined when calling leaveGroup.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -859,185 +770,12 @@ export class GroupManagementApi {
         let localVarUseFormData = false;
 
         let localVarRequestOptions: localVarRequest.Options = {
-            method: 'PUT',
+            method: 'DELETE',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "GroupUpdateNamePayload")
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
-     * Handles adding participants to a group. You must be admin in the group or the query will fail.
-     * @summary Add participant.
-     * @param instanceKey Instance key
-     * @param groupId Group id of the group
-     * @param data Group update payload
-     */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsAddPost (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/add'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
-            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsAddPost.');
-        }
-
-        // verify required parameter 'groupId' is not null or undefined
-        if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsAddPost.');
-        }
-
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsAddPost.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'POST',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
-     * Demotes admins in groups. You must be admin in the group or the query will fail.
-     * @summary Demote participant.
-     * @param instanceKey Instance key
-     * @param groupId Group id of the group
-     * @param data Group update payload
-     */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsDemotePut (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/demote'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
-            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsDemotePut.');
-        }
-
-        // verify required parameter 'groupId' is not null or undefined
-        if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsDemotePut.');
-        }
-
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsDemotePut.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'PUT',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1082,7 +820,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group update payload
      */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsPromotePut (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async promoteParticipant (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/promote'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -1099,17 +837,17 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsPromotePut.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling promoteParticipant.');
         }
 
         // verify required parameter 'groupId' is not null or undefined
         if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsPromotePut.');
+            throw new Error('Required parameter groupId was null or undefined when calling promoteParticipant.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsPromotePut.');
+            throw new Error('Required parameter data was null or undefined when calling promoteParticipant.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1168,7 +906,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group update payload
      */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsRemoveDelete (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async removeParticipant (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/remove'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -1185,17 +923,17 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsRemoveDelete.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling removeParticipant.');
         }
 
         // verify required parameter 'groupId' is not null or undefined
         if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsRemoveDelete.');
+            throw new Error('Required parameter groupId was null or undefined when calling removeParticipant.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyGroupsGroupIdParticipantsRemoveDelete.');
+            throw new Error('Required parameter data was null or undefined when calling removeParticipant.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1248,15 +986,16 @@ export class GroupManagementApi {
         });
     }
     /**
-     * Changes the group profile picture. Currently it only seems to accept JPEG images only
-     * @summary Set group picture.
+     * Set if non-admins are allowed to send messages in groups
+     * @summary Set group announce.
      * @param instanceKey Instance key
+     * @param announce Announce status
      * @param groupId Group id of the group
-     * @param instancesInstanceKeyGroupsGroupIdProfilePicPutRequest 
      */
-    public async instancesInstanceKeyGroupsGroupIdProfilePicPut (instanceKey: string, groupId: string, instancesInstanceKeyGroupsGroupIdProfilePicPutRequest: InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/profile-pic'
+    public async setGroupAnnounce (instanceKey: string, announce: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/announce'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
+            .replace('{' + 'announce' + '}', encodeURIComponent(String(announce)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
@@ -1271,17 +1010,17 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsGroupIdProfilePicPut.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling setGroupAnnounce.');
+        }
+
+        // verify required parameter 'announce' is not null or undefined
+        if (announce === null || announce === undefined) {
+            throw new Error('Required parameter announce was null or undefined when calling setGroupAnnounce.');
         }
 
         // verify required parameter 'groupId' is not null or undefined
         if (groupId === null || groupId === undefined) {
-            throw new Error('Required parameter groupId was null or undefined when calling instancesInstanceKeyGroupsGroupIdProfilePicPut.');
-        }
-
-        // verify required parameter 'instancesInstanceKeyGroupsGroupIdProfilePicPutRequest' is not null or undefined
-        if (instancesInstanceKeyGroupsGroupIdProfilePicPutRequest === null || instancesInstanceKeyGroupsGroupIdProfilePicPutRequest === undefined) {
-            throw new Error('Required parameter instancesInstanceKeyGroupsGroupIdProfilePicPutRequest was null or undefined when calling instancesInstanceKeyGroupsGroupIdProfilePicPut.');
+            throw new Error('Required parameter groupId was null or undefined when calling setGroupAnnounce.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1295,7 +1034,6 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(instancesInstanceKeyGroupsGroupIdProfilePicPutRequest, "InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1334,14 +1072,16 @@ export class GroupManagementApi {
         });
     }
     /**
-     * Gets a group info from an invite link. An invite link is a link that can be used to join a group. It is usually in the format https://chat.whatsapp.com/{invitecode}
-     * @summary Get group from invite link.
+     * Changes the group description
+     * @summary Set group description.
      * @param instanceKey Instance key
-     * @param inviteLink The invite link to check
+     * @param groupId Group id of the group
+     * @param data Group description data
      */
-    public async instancesInstanceKeyGroupsInviteInfoGet (instanceKey: string, inviteLink: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/groups/invite-info'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+    public async setGroupDescription (instanceKey: string, groupId: string, data: GroupUpdateDescriptionPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/description'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
+            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
         const produces = ['*/*'];
@@ -1355,16 +1095,17 @@ export class GroupManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyGroupsInviteInfoGet.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling setGroupDescription.');
         }
 
-        // verify required parameter 'inviteLink' is not null or undefined
-        if (inviteLink === null || inviteLink === undefined) {
-            throw new Error('Required parameter inviteLink was null or undefined when calling instancesInstanceKeyGroupsInviteInfoGet.');
+        // verify required parameter 'groupId' is not null or undefined
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling setGroupDescription.');
         }
 
-        if (inviteLink !== undefined) {
-            localVarQueryParameters['invite_link'] = ObjectSerializer.serialize(inviteLink, "string");
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling setGroupDescription.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1372,12 +1113,271 @@ export class GroupManagementApi {
         let localVarUseFormData = false;
 
         let localVarRequestOptions: localVarRequest.Options = {
-            method: 'GET',
+            method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
+            body: ObjectSerializer.serialize(data, "GroupUpdateDescriptionPayload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Set if non-admins are allowed to change the group dp and other stuff
+     * @summary Set group locked.
+     * @param instanceKey Instance key
+     * @param locked Locked status
+     * @param groupId Group id of the group
+     */
+    public async setGroupLocked (instanceKey: string, locked: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/lock'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
+            .replace('{' + 'locked' + '}', encodeURIComponent(String(locked)))
+            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling setGroupLocked.');
+        }
+
+        // verify required parameter 'locked' is not null or undefined
+        if (locked === null || locked === undefined) {
+            throw new Error('Required parameter locked was null or undefined when calling setGroupLocked.');
+        }
+
+        // verify required parameter 'groupId' is not null or undefined
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling setGroupLocked.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'PUT',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Changes the group name. The max limit is 22 chars
+     * @summary Set group name.
+     * @param instanceKey Instance key
+     * @param groupId Group id of the group
+     * @param data Group name data
+     */
+    public async setGroupName (instanceKey: string, groupId: string, data: GroupUpdateNamePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/name'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
+            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling setGroupName.');
+        }
+
+        // verify required parameter 'groupId' is not null or undefined
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling setGroupName.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling setGroupName.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'PUT',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(data, "GroupUpdateNamePayload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Changes the group profile picture. Currently it only seems to accept JPEG images only
+     * @summary Set group picture.
+     * @param instanceKey Instance key
+     * @param groupId Group id of the group
+     * @param setGroupPictureRequest 
+     */
+    public async setGroupPicture (instanceKey: string, groupId: string, setGroupPictureRequest: SetGroupPictureRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/profile-pic'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
+            .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling setGroupPicture.');
+        }
+
+        // verify required parameter 'groupId' is not null or undefined
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling setGroupPicture.');
+        }
+
+        // verify required parameter 'setGroupPictureRequest' is not null or undefined
+        if (setGroupPictureRequest === null || setGroupPictureRequest === undefined) {
+            throw new Error('Required parameter setGroupPictureRequest was null or undefined when calling setGroupPicture.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'PUT',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(setGroupPictureRequest, "SetGroupPictureRequest")
         };
 
         let authenticationPromise = Promise.resolve();

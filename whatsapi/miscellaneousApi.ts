@@ -96,7 +96,7 @@ export class MiscellaneousApi {
      * @param instanceKey Instance key
      * @param jid JID
      */
-    public async instancesInstanceKeyMiscProfilePicGet (instanceKey: string, jid: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async getProfilePic (instanceKey: string, jid: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/misc/profile-pic'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -112,12 +112,12 @@ export class MiscellaneousApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyMiscProfilePicGet.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling getProfilePic.');
         }
 
         // verify required parameter 'jid' is not null or undefined
         if (jid === null || jid === undefined) {
-            throw new Error('Required parameter jid was null or undefined when calling instancesInstanceKeyMiscProfilePicGet.');
+            throw new Error('Required parameter jid was null or undefined when calling getProfilePic.');
         }
 
         if (jid !== undefined) {
@@ -178,7 +178,7 @@ export class MiscellaneousApi {
      * @param instanceKey Instance key
      * @param data Data
      */
-    public async instancesInstanceKeyMiscUserInfoPost (instanceKey: string, data: UserInfoPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async getUsersInfo (instanceKey: string, data: UserInfoPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/misc/user-info'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -194,12 +194,12 @@ export class MiscellaneousApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyMiscUserInfoPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling getUsersInfo.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeyMiscUserInfoPost.');
+            throw new Error('Required parameter data was null or undefined when calling getUsersInfo.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);

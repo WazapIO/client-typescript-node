@@ -19,18 +19,18 @@ import { APIResponse } from '../models/aPIResponse';
 import { ButtonMessagePayload } from '../models/buttonMessagePayload';
 import { ButtonMessageWithMediaPayload } from '../models/buttonMessageWithMediaPayload';
 import { ContactMessagePayload } from '../models/contactMessagePayload';
-import { InstancesInstanceKeySendAudioPostRequest } from '../models/instancesInstanceKeySendAudioPostRequest';
-import { InstancesInstanceKeySendDocumentPostRequest } from '../models/instancesInstanceKeySendDocumentPostRequest';
-import { InstancesInstanceKeySendImagePostRequest } from '../models/instancesInstanceKeySendImagePostRequest';
-import { InstancesInstanceKeySendUploadPostRequest } from '../models/instancesInstanceKeySendUploadPostRequest';
-import { InstancesInstanceKeySendVideoPostRequest } from '../models/instancesInstanceKeySendVideoPostRequest';
 import { ListMessagePayload } from '../models/listMessagePayload';
 import { LocationMessagePayload } from '../models/locationMessagePayload';
 import { PollMessagePayload } from '../models/pollMessagePayload';
+import { SendAudioRequest } from '../models/sendAudioRequest';
+import { SendDocumentRequest } from '../models/sendDocumentRequest';
+import { SendImageRequest } from '../models/sendImageRequest';
 import { SendMediaPayload } from '../models/sendMediaPayload';
+import { SendVideoRequest } from '../models/sendVideoRequest';
 import { TemplateButtonPayload } from '../models/templateButtonPayload';
 import { TemplateButtonWithMediaPayload } from '../models/templateButtonWithMediaPayload';
 import { TextMessage } from '../models/textMessage';
+import { UploadMediaRequest } from '../models/uploadMediaRequest';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
 import { HttpBasicAuth, HttpBearerAuth, ApiKeyAuth, OAuth } from '../model/models';
@@ -109,10 +109,10 @@ export class MessageSendingApi {
      * @summary Send raw audio.
      * @param instanceKey Instance key
      * @param to The recipient\&#39;s number
-     * @param instancesInstanceKeySendAudioPostRequest 
+     * @param sendAudioRequest 
      * @param caption Attached caption
      */
-    public async instancesInstanceKeySendAudioPost (instanceKey: string, to: string, instancesInstanceKeySendAudioPostRequest: InstancesInstanceKeySendAudioPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendAudio (instanceKey: string, to: string, sendAudioRequest: SendAudioRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/audio'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -128,17 +128,17 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendAudioPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendAudio.');
         }
 
         // verify required parameter 'to' is not null or undefined
         if (to === null || to === undefined) {
-            throw new Error('Required parameter to was null or undefined when calling instancesInstanceKeySendAudioPost.');
+            throw new Error('Required parameter to was null or undefined when calling sendAudio.');
         }
 
-        // verify required parameter 'instancesInstanceKeySendAudioPostRequest' is not null or undefined
-        if (instancesInstanceKeySendAudioPostRequest === null || instancesInstanceKeySendAudioPostRequest === undefined) {
-            throw new Error('Required parameter instancesInstanceKeySendAudioPostRequest was null or undefined when calling instancesInstanceKeySendAudioPost.');
+        // verify required parameter 'sendAudioRequest' is not null or undefined
+        if (sendAudioRequest === null || sendAudioRequest === undefined) {
+            throw new Error('Required parameter sendAudioRequest was null or undefined when calling sendAudio.');
         }
 
         if (to !== undefined) {
@@ -160,86 +160,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(instancesInstanceKeySendAudioPostRequest, "InstancesInstanceKeySendAudioPostRequest")
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
-     * Sends an interactive button message to the given user. This message also has media header with it. Make sure that all the button ids are unique
-     * @summary Send a button message with a media header.
-     * @param instanceKey Instance key
-     * @param data Message data
-     */
-    public async instancesInstanceKeySendButtonMediaPost (instanceKey: string, data: ButtonMessageWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/send/button-media'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendButtonMediaPost.');
-        }
-
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendButtonMediaPost.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'POST',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-            body: ObjectSerializer.serialize(data, "ButtonMessageWithMediaPayload")
+            body: ObjectSerializer.serialize(sendAudioRequest, "SendAudioRequest")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -283,7 +204,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendButtonsPost (instanceKey: string, data: ButtonMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendButtonMessage (instanceKey: string, data: ButtonMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/buttons'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -299,12 +220,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendButtonsPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendButtonMessage.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendButtonsPost.');
+            throw new Error('Required parameter data was null or undefined when calling sendButtonMessage.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -357,12 +278,91 @@ export class MessageSendingApi {
         });
     }
     /**
+     * Sends an interactive button message to the given user. This message also has media header with it. Make sure that all the button ids are unique
+     * @summary Send a button message with a media header.
+     * @param instanceKey Instance key
+     * @param data Message data
+     */
+    public async sendButtonWithMedia (instanceKey: string, data: ButtonMessageWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/send/button-media'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendButtonWithMedia.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling sendButtonWithMedia.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'POST',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(data, "ButtonMessageWithMediaPayload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
      * Sends a contact (vcard) message to the given user.
      * @summary Send a contact message.
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendContactPost (instanceKey: string, data: ContactMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendContact (instanceKey: string, data: ContactMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/contact'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -378,12 +378,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendContactPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendContact.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendContactPost.');
+            throw new Error('Required parameter data was null or undefined when calling sendContact.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -440,10 +440,10 @@ export class MessageSendingApi {
      * @summary Send raw document.
      * @param instanceKey Instance key
      * @param to The recipient\&#39;s number
-     * @param instancesInstanceKeySendDocumentPostRequest 
+     * @param sendDocumentRequest 
      * @param caption Attached caption
      */
-    public async instancesInstanceKeySendDocumentPost (instanceKey: string, to: string, instancesInstanceKeySendDocumentPostRequest: InstancesInstanceKeySendDocumentPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendDocument (instanceKey: string, to: string, sendDocumentRequest: SendDocumentRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/document'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -459,17 +459,17 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendDocumentPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendDocument.');
         }
 
         // verify required parameter 'to' is not null or undefined
         if (to === null || to === undefined) {
-            throw new Error('Required parameter to was null or undefined when calling instancesInstanceKeySendDocumentPost.');
+            throw new Error('Required parameter to was null or undefined when calling sendDocument.');
         }
 
-        // verify required parameter 'instancesInstanceKeySendDocumentPostRequest' is not null or undefined
-        if (instancesInstanceKeySendDocumentPostRequest === null || instancesInstanceKeySendDocumentPostRequest === undefined) {
-            throw new Error('Required parameter instancesInstanceKeySendDocumentPostRequest was null or undefined when calling instancesInstanceKeySendDocumentPost.');
+        // verify required parameter 'sendDocumentRequest' is not null or undefined
+        if (sendDocumentRequest === null || sendDocumentRequest === undefined) {
+            throw new Error('Required parameter sendDocumentRequest was null or undefined when calling sendDocument.');
         }
 
         if (to !== undefined) {
@@ -491,7 +491,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(instancesInstanceKeySendDocumentPostRequest, "InstancesInstanceKeySendDocumentPostRequest")
+            body: ObjectSerializer.serialize(sendDocumentRequest, "SendDocumentRequest")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -534,10 +534,10 @@ export class MessageSendingApi {
      * @summary Send raw image.
      * @param instanceKey Instance key
      * @param to The recipient\&#39;s number
-     * @param instancesInstanceKeySendImagePostRequest 
+     * @param sendImageRequest 
      * @param caption Attached caption
      */
-    public async instancesInstanceKeySendImagePost (instanceKey: string, to: string, instancesInstanceKeySendImagePostRequest: InstancesInstanceKeySendImagePostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendImage (instanceKey: string, to: string, sendImageRequest: SendImageRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/image'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -553,17 +553,17 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendImagePost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendImage.');
         }
 
         // verify required parameter 'to' is not null or undefined
         if (to === null || to === undefined) {
-            throw new Error('Required parameter to was null or undefined when calling instancesInstanceKeySendImagePost.');
+            throw new Error('Required parameter to was null or undefined when calling sendImage.');
         }
 
-        // verify required parameter 'instancesInstanceKeySendImagePostRequest' is not null or undefined
-        if (instancesInstanceKeySendImagePostRequest === null || instancesInstanceKeySendImagePostRequest === undefined) {
-            throw new Error('Required parameter instancesInstanceKeySendImagePostRequest was null or undefined when calling instancesInstanceKeySendImagePost.');
+        // verify required parameter 'sendImageRequest' is not null or undefined
+        if (sendImageRequest === null || sendImageRequest === undefined) {
+            throw new Error('Required parameter sendImageRequest was null or undefined when calling sendImage.');
         }
 
         if (to !== undefined) {
@@ -585,7 +585,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(instancesInstanceKeySendImagePostRequest, "InstancesInstanceKeySendImagePostRequest")
+            body: ObjectSerializer.serialize(sendImageRequest, "SendImageRequest")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -629,7 +629,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendListPost (instanceKey: string, data: ListMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendListMessage (instanceKey: string, data: ListMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/list'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -645,12 +645,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendListPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendListMessage.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendListPost.');
+            throw new Error('Required parameter data was null or undefined when calling sendListMessage.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -708,7 +708,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendLocationPost (instanceKey: string, data: LocationMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendLocation (instanceKey: string, data: LocationMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/location'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -724,12 +724,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendLocationPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendLocation.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendLocationPost.');
+            throw new Error('Required parameter data was null or undefined when calling sendLocation.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -787,7 +787,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendMediaPost (instanceKey: string, data: SendMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendMediaMessage (instanceKey: string, data: SendMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/media'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -803,12 +803,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendMediaPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendMediaMessage.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendMediaPost.');
+            throw new Error('Required parameter data was null or undefined when calling sendMediaMessage.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -866,7 +866,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendPollPost (instanceKey: string, data: PollMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendPollMessage (instanceKey: string, data: PollMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/poll'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -882,12 +882,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendPollPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendPollMessage.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendPollPost.');
+            throw new Error('Required parameter data was null or undefined when calling sendPollMessage.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -940,91 +940,12 @@ export class MessageSendingApi {
         });
     }
     /**
-     * Sends an interactive template message with a media header to the given user. Note: The valid button types are \"replyButton\", \"urlButton\", \"callButton\"
-     * @summary Send a template message with media.
-     * @param instanceKey Instance key
-     * @param data Message data
-     */
-    public async instancesInstanceKeySendTemplateMediaPost (instanceKey: string, data: TemplateButtonWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/send/template-media'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendTemplateMediaPost.');
-        }
-
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendTemplateMediaPost.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'POST',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-            body: ObjectSerializer.serialize(data, "TemplateButtonWithMediaPayload")
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "APIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
      * Sends an interactive template message to the given user. Note: The valid button types are \"replyButton\", \"urlButton\", \"callButton\"
      * @summary Send a template message.
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendTemplatePost (instanceKey: string, data: TemplateButtonPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendTemplate (instanceKey: string, data: TemplateButtonPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/template'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1040,12 +961,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendTemplatePost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendTemplate.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendTemplatePost.');
+            throw new Error('Required parameter data was null or undefined when calling sendTemplate.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1098,12 +1019,91 @@ export class MessageSendingApi {
         });
     }
     /**
+     * Sends an interactive template message with a media header to the given user. Note: The valid button types are \"replyButton\", \"urlButton\", \"callButton\"
+     * @summary Send a template message with media.
+     * @param instanceKey Instance key
+     * @param data Message data
+     */
+    public async sendTemplateWithMedia (instanceKey: string, data: TemplateButtonWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/send/template-media'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendTemplateWithMedia.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling sendTemplateWithMedia.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'POST',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(data, "TemplateButtonWithMediaPayload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
      * Sends a text message to the given user.
      * @summary Send a text message.
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendTextPost (instanceKey: string, data: TextMessage, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendTextMessage (instanceKey: string, data: TextMessage, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/text'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1119,12 +1119,12 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendTextPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendTextMessage.');
         }
 
         // verify required parameter 'data' is not null or undefined
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling instancesInstanceKeySendTextPost.');
+            throw new Error('Required parameter data was null or undefined when calling sendTextMessage.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1177,14 +1177,15 @@ export class MessageSendingApi {
         });
     }
     /**
-     * Uploads media to WhatsApp servers and returns the media keys. Store the returned media keys, as you will need them to send media messages
-     * @summary Upload media.
+     * Sends a video message by uploading to the WhatsApp servers every time. This is not recommended for bulk sending.
+     * @summary Send raw video.
      * @param instanceKey Instance key
-     * @param type Media type
-     * @param instancesInstanceKeySendUploadPostRequest 
+     * @param to The recipient\&#39;s number
+     * @param sendVideoRequest 
+     * @param caption Attached caption
      */
-    public async instancesInstanceKeySendUploadPost (instanceKey: string, type: 'image' | 'video' | 'audio' | 'document', instancesInstanceKeySendUploadPostRequest: InstancesInstanceKeySendUploadPostRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/send/upload'
+    public async sendVideo (instanceKey: string, to: string, sendVideoRequest: SendVideoRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/send/video'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
@@ -1199,21 +1200,25 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendUploadPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendVideo.');
         }
 
-        // verify required parameter 'type' is not null or undefined
-        if (type === null || type === undefined) {
-            throw new Error('Required parameter type was null or undefined when calling instancesInstanceKeySendUploadPost.');
+        // verify required parameter 'to' is not null or undefined
+        if (to === null || to === undefined) {
+            throw new Error('Required parameter to was null or undefined when calling sendVideo.');
         }
 
-        // verify required parameter 'instancesInstanceKeySendUploadPostRequest' is not null or undefined
-        if (instancesInstanceKeySendUploadPostRequest === null || instancesInstanceKeySendUploadPostRequest === undefined) {
-            throw new Error('Required parameter instancesInstanceKeySendUploadPostRequest was null or undefined when calling instancesInstanceKeySendUploadPost.');
+        // verify required parameter 'sendVideoRequest' is not null or undefined
+        if (sendVideoRequest === null || sendVideoRequest === undefined) {
+            throw new Error('Required parameter sendVideoRequest was null or undefined when calling sendVideo.');
         }
 
-        if (type !== undefined) {
-            localVarQueryParameters['type'] = ObjectSerializer.serialize(type, "'image' | 'video' | 'audio' | 'document'");
+        if (to !== undefined) {
+            localVarQueryParameters['to'] = ObjectSerializer.serialize(to, "string");
+        }
+
+        if (caption !== undefined) {
+            localVarQueryParameters['caption'] = ObjectSerializer.serialize(caption, "string");
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1227,7 +1232,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(instancesInstanceKeySendUploadPostRequest, "InstancesInstanceKeySendUploadPostRequest")
+            body: ObjectSerializer.serialize(sendVideoRequest, "SendVideoRequest")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1266,15 +1271,14 @@ export class MessageSendingApi {
         });
     }
     /**
-     * Sends a video message by uploading to the WhatsApp servers every time. This is not recommended for bulk sending.
-     * @summary Send raw video.
+     * Uploads media to WhatsApp servers and returns the media keys. Store the returned media keys, as you will need them to send media messages
+     * @summary Upload media.
      * @param instanceKey Instance key
-     * @param to The recipient\&#39;s number
-     * @param instancesInstanceKeySendVideoPostRequest 
-     * @param caption Attached caption
+     * @param type Media type
+     * @param uploadMediaRequest 
      */
-    public async instancesInstanceKeySendVideoPost (instanceKey: string, to: string, instancesInstanceKeySendVideoPostRequest: InstancesInstanceKeySendVideoPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/send/video'
+    public async uploadMedia (instanceKey: string, type: 'image' | 'video' | 'audio' | 'document', uploadMediaRequest: UploadMediaRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/send/upload'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
@@ -1289,25 +1293,21 @@ export class MessageSendingApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeySendVideoPost.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling uploadMedia.');
         }
 
-        // verify required parameter 'to' is not null or undefined
-        if (to === null || to === undefined) {
-            throw new Error('Required parameter to was null or undefined when calling instancesInstanceKeySendVideoPost.');
+        // verify required parameter 'type' is not null or undefined
+        if (type === null || type === undefined) {
+            throw new Error('Required parameter type was null or undefined when calling uploadMedia.');
         }
 
-        // verify required parameter 'instancesInstanceKeySendVideoPostRequest' is not null or undefined
-        if (instancesInstanceKeySendVideoPostRequest === null || instancesInstanceKeySendVideoPostRequest === undefined) {
-            throw new Error('Required parameter instancesInstanceKeySendVideoPostRequest was null or undefined when calling instancesInstanceKeySendVideoPost.');
+        // verify required parameter 'uploadMediaRequest' is not null or undefined
+        if (uploadMediaRequest === null || uploadMediaRequest === undefined) {
+            throw new Error('Required parameter uploadMediaRequest was null or undefined when calling uploadMedia.');
         }
 
-        if (to !== undefined) {
-            localVarQueryParameters['to'] = ObjectSerializer.serialize(to, "string");
-        }
-
-        if (caption !== undefined) {
-            localVarQueryParameters['caption'] = ObjectSerializer.serialize(caption, "string");
+        if (type !== undefined) {
+            localVarQueryParameters['type'] = ObjectSerializer.serialize(type, "'image' | 'video' | 'audio' | 'document'");
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -1321,7 +1321,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(instancesInstanceKeySendVideoPostRequest, "InstancesInstanceKeySendVideoPostRequest")
+            body: ObjectSerializer.serialize(uploadMediaRequest, "UploadMediaRequest")
         };
 
         let authenticationPromise = Promise.resolve();

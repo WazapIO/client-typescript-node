@@ -94,7 +94,7 @@ export class BusinessManagementApi {
      * @summary Fetches the catlog.
      * @param instanceKey Instance key
      */
-    public async instancesInstanceKeyBusinessCatalogGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async fetchCatlog (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/business/catalog'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -110,7 +110,7 @@ export class BusinessManagementApi {
 
         // verify required parameter 'instanceKey' is not null or undefined
         if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyBusinessCatalogGet.');
+            throw new Error('Required parameter instanceKey was null or undefined when calling fetchCatlog.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);

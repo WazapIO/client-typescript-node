@@ -10,12 +10,6 @@ export * from './groupCreatePayload';
 export * from './groupUpdateDescriptionPayload';
 export * from './groupUpdateNamePayload';
 export * from './groupUpdateParticipantsPayload';
-export * from './instancesInstanceKeyGroupsGroupIdProfilePicPutRequest';
-export * from './instancesInstanceKeySendAudioPostRequest';
-export * from './instancesInstanceKeySendDocumentPostRequest';
-export * from './instancesInstanceKeySendImagePostRequest';
-export * from './instancesInstanceKeySendUploadPostRequest';
-export * from './instancesInstanceKeySendVideoPostRequest';
 export * from './listItem';
 export * from './listMessagePayload';
 export * from './listSection';
@@ -23,11 +17,17 @@ export * from './locationMessagePayload';
 export * from './locationMessagePayloadLocation';
 export * from './pollMessagePayload';
 export * from './replyButton';
+export * from './sendAudioRequest';
+export * from './sendDocumentRequest';
+export * from './sendImageRequest';
 export * from './sendMediaPayload';
+export * from './sendVideoRequest';
+export * from './setGroupPictureRequest';
 export * from './templateButton';
 export * from './templateButtonPayload';
 export * from './templateButtonWithMediaPayload';
 export * from './textMessage';
+export * from './uploadMediaRequest';
 export * from './userInfoPayload';
 export * from './webhookPayload';
 
@@ -54,12 +54,6 @@ import { GroupCreatePayload } from './groupCreatePayload';
 import { GroupUpdateDescriptionPayload } from './groupUpdateDescriptionPayload';
 import { GroupUpdateNamePayload } from './groupUpdateNamePayload';
 import { GroupUpdateParticipantsPayload } from './groupUpdateParticipantsPayload';
-import { InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest } from './instancesInstanceKeyGroupsGroupIdProfilePicPutRequest';
-import { InstancesInstanceKeySendAudioPostRequest } from './instancesInstanceKeySendAudioPostRequest';
-import { InstancesInstanceKeySendDocumentPostRequest } from './instancesInstanceKeySendDocumentPostRequest';
-import { InstancesInstanceKeySendImagePostRequest } from './instancesInstanceKeySendImagePostRequest';
-import { InstancesInstanceKeySendUploadPostRequest } from './instancesInstanceKeySendUploadPostRequest';
-import { InstancesInstanceKeySendVideoPostRequest } from './instancesInstanceKeySendVideoPostRequest';
 import { ListItem } from './listItem';
 import { ListMessagePayload } from './listMessagePayload';
 import { ListSection } from './listSection';
@@ -67,11 +61,17 @@ import { LocationMessagePayload } from './locationMessagePayload';
 import { LocationMessagePayloadLocation } from './locationMessagePayloadLocation';
 import { PollMessagePayload } from './pollMessagePayload';
 import { ReplyButton } from './replyButton';
+import { SendAudioRequest } from './sendAudioRequest';
+import { SendDocumentRequest } from './sendDocumentRequest';
+import { SendImageRequest } from './sendImageRequest';
 import { SendMediaPayload } from './sendMediaPayload';
+import { SendVideoRequest } from './sendVideoRequest';
+import { SetGroupPictureRequest } from './setGroupPictureRequest';
 import { TemplateButton } from './templateButton';
 import { TemplateButtonPayload } from './templateButtonPayload';
 import { TemplateButtonWithMediaPayload } from './templateButtonWithMediaPayload';
 import { TextMessage } from './textMessage';
+import { UploadMediaRequest } from './uploadMediaRequest';
 import { UserInfoPayload } from './userInfoPayload';
 import { WebhookPayload } from './webhookPayload';
 
@@ -101,12 +101,6 @@ let typeMap: {[index: string]: any} = {
     "GroupUpdateDescriptionPayload": GroupUpdateDescriptionPayload,
     "GroupUpdateNamePayload": GroupUpdateNamePayload,
     "GroupUpdateParticipantsPayload": GroupUpdateParticipantsPayload,
-    "InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest": InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest,
-    "InstancesInstanceKeySendAudioPostRequest": InstancesInstanceKeySendAudioPostRequest,
-    "InstancesInstanceKeySendDocumentPostRequest": InstancesInstanceKeySendDocumentPostRequest,
-    "InstancesInstanceKeySendImagePostRequest": InstancesInstanceKeySendImagePostRequest,
-    "InstancesInstanceKeySendUploadPostRequest": InstancesInstanceKeySendUploadPostRequest,
-    "InstancesInstanceKeySendVideoPostRequest": InstancesInstanceKeySendVideoPostRequest,
     "ListItem": ListItem,
     "ListMessagePayload": ListMessagePayload,
     "ListSection": ListSection,
@@ -114,11 +108,17 @@ let typeMap: {[index: string]: any} = {
     "LocationMessagePayloadLocation": LocationMessagePayloadLocation,
     "PollMessagePayload": PollMessagePayload,
     "ReplyButton": ReplyButton,
+    "SendAudioRequest": SendAudioRequest,
+    "SendDocumentRequest": SendDocumentRequest,
+    "SendImageRequest": SendImageRequest,
     "SendMediaPayload": SendMediaPayload,
+    "SendVideoRequest": SendVideoRequest,
+    "SetGroupPictureRequest": SetGroupPictureRequest,
     "TemplateButton": TemplateButton,
     "TemplateButtonPayload": TemplateButtonPayload,
     "TemplateButtonWithMediaPayload": TemplateButtonWithMediaPayload,
     "TextMessage": TextMessage,
+    "UploadMediaRequest": UploadMediaRequest,
     "UserInfoPayload": UserInfoPayload,
     "WebhookPayload": WebhookPayload,
 }
