@@ -15,22 +15,22 @@ import localVarRequest from 'request';
 import http from 'http';
 
 /* tslint:disable:no-unused-locals */
+import { APIResponse } from '../models/aPIResponse';
+import { ButtonMessagePayload } from '../models/buttonMessagePayload';
+import { ButtonMessageWithMediaPayload } from '../models/buttonMessageWithMediaPayload';
+import { ContactMessagePayload } from '../models/contactMessagePayload';
 import { InstancesInstanceKeySendAudioPostRequest } from '../models/instancesInstanceKeySendAudioPostRequest';
 import { InstancesInstanceKeySendDocumentPostRequest } from '../models/instancesInstanceKeySendDocumentPostRequest';
 import { InstancesInstanceKeySendImagePostRequest } from '../models/instancesInstanceKeySendImagePostRequest';
 import { InstancesInstanceKeySendUploadPostRequest } from '../models/instancesInstanceKeySendUploadPostRequest';
 import { InstancesInstanceKeySendVideoPostRequest } from '../models/instancesInstanceKeySendVideoPostRequest';
-import { MainAPIResponse } from '../models/mainAPIResponse';
-import { StructsButtonMessagePayload } from '../models/structsButtonMessagePayload';
-import { StructsButtonMessageWithMediaPayload } from '../models/structsButtonMessageWithMediaPayload';
-import { StructsContactMessagePayload } from '../models/structsContactMessagePayload';
-import { StructsListMessagePayload } from '../models/structsListMessagePayload';
-import { StructsLocationMessagePayload } from '../models/structsLocationMessagePayload';
-import { StructsPollMessagePayload } from '../models/structsPollMessagePayload';
-import { StructsSendMediaPayload } from '../models/structsSendMediaPayload';
-import { StructsTemplateButtonPayload } from '../models/structsTemplateButtonPayload';
-import { StructsTemplateButtonWithMediaPayload } from '../models/structsTemplateButtonWithMediaPayload';
-import { StructsTextMessage } from '../models/structsTextMessage';
+import { ListMessagePayload } from '../models/listMessagePayload';
+import { LocationMessagePayload } from '../models/locationMessagePayload';
+import { PollMessagePayload } from '../models/pollMessagePayload';
+import { SendMediaPayload } from '../models/sendMediaPayload';
+import { TemplateButtonPayload } from '../models/templateButtonPayload';
+import { TemplateButtonWithMediaPayload } from '../models/templateButtonWithMediaPayload';
+import { TextMessage } from '../models/textMessage';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
 import { HttpBasicAuth, HttpBearerAuth, ApiKeyAuth, OAuth } from '../model/models';
@@ -105,78 +105,6 @@ export class MessageSendingApi {
     }
 
     /**
-     * Gets list of all products registered by you.
-     * @summary Fetches the catlog.
-     * @param instanceKey Instance key
-     */
-    public async instancesInstanceKeyBusinessCatalogGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
-        const localVarPath = this.basePath + '/instances/{instance_key}/business/catalog'
-            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
-        const produces = ['*/*'];
-        // give precedence to 'application/json'
-        if (produces.indexOf('application/json') >= 0) {
-            localVarHeaderParams.Accept = 'application/json';
-        } else {
-            localVarHeaderParams.Accept = produces.join(',');
-        }
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'instanceKey' is not null or undefined
-        if (instanceKey === null || instanceKey === undefined) {
-            throw new Error('Required parameter instanceKey was null or undefined when calling instancesInstanceKeyBusinessCatalogGet.');
-        }
-
-        (<any>Object).assign(localVarHeaderParams, options.headers);
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'GET',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-        };
-
-        let authenticationPromise = Promise.resolve();
-        if (this.authentications.ApiKeyAuth.apiKey) {
-            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
-        }
-        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
-
-        let interceptorPromise = authenticationPromise;
-        for (const interceptor of this.interceptors) {
-            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
-        }
-
-        return interceptorPromise.then(() => {
-            if (Object.keys(localVarFormParams).length) {
-                if (localVarUseFormData) {
-                    (<any>localVarRequestOptions).formData = localVarFormParams;
-                } else {
-                    localVarRequestOptions.form = localVarFormParams;
-                }
-            }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
-                localVarRequest(localVarRequestOptions, (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
-                            resolve({ response: response, body: body });
-                        } else {
-                            reject(new HttpError(response, body, response.statusCode));
-                        }
-                    }
-                });
-            });
-        });
-    }
-    /**
      * Sends a audio message by uploading to the WhatsApp servers every time. This is not recommended for bulk sending.
      * @summary Send raw audio.
      * @param instanceKey Instance key
@@ -184,7 +112,7 @@ export class MessageSendingApi {
      * @param instancesInstanceKeySendAudioPostRequest 
      * @param caption Attached caption
      */
-    public async instancesInstanceKeySendAudioPost (instanceKey: string, to: string, instancesInstanceKeySendAudioPostRequest: InstancesInstanceKeySendAudioPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendAudioPost (instanceKey: string, to: string, instancesInstanceKeySendAudioPostRequest: InstancesInstanceKeySendAudioPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/audio'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -254,13 +182,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -276,7 +204,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendButtonMediaPost (instanceKey: string, data: StructsButtonMessageWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendButtonMediaPost (instanceKey: string, data: ButtonMessageWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/button-media'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -311,7 +239,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsButtonMessageWithMediaPayload")
+            body: ObjectSerializer.serialize(data, "ButtonMessageWithMediaPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -333,13 +261,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -355,7 +283,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendButtonsPost (instanceKey: string, data: StructsButtonMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendButtonsPost (instanceKey: string, data: ButtonMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/buttons'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -390,7 +318,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsButtonMessagePayload")
+            body: ObjectSerializer.serialize(data, "ButtonMessagePayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -412,13 +340,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -434,7 +362,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendContactPost (instanceKey: string, data: StructsContactMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendContactPost (instanceKey: string, data: ContactMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/contact'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -469,7 +397,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsContactMessagePayload")
+            body: ObjectSerializer.serialize(data, "ContactMessagePayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -491,13 +419,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -515,7 +443,7 @@ export class MessageSendingApi {
      * @param instancesInstanceKeySendDocumentPostRequest 
      * @param caption Attached caption
      */
-    public async instancesInstanceKeySendDocumentPost (instanceKey: string, to: string, instancesInstanceKeySendDocumentPostRequest: InstancesInstanceKeySendDocumentPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendDocumentPost (instanceKey: string, to: string, instancesInstanceKeySendDocumentPostRequest: InstancesInstanceKeySendDocumentPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/document'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -585,13 +513,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -609,7 +537,7 @@ export class MessageSendingApi {
      * @param instancesInstanceKeySendImagePostRequest 
      * @param caption Attached caption
      */
-    public async instancesInstanceKeySendImagePost (instanceKey: string, to: string, instancesInstanceKeySendImagePostRequest: InstancesInstanceKeySendImagePostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendImagePost (instanceKey: string, to: string, instancesInstanceKeySendImagePostRequest: InstancesInstanceKeySendImagePostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/image'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -679,13 +607,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -701,7 +629,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendListPost (instanceKey: string, data: StructsListMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendListPost (instanceKey: string, data: ListMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/list'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -736,7 +664,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsListMessagePayload")
+            body: ObjectSerializer.serialize(data, "ListMessagePayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -758,13 +686,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -780,7 +708,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendLocationPost (instanceKey: string, data: StructsLocationMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendLocationPost (instanceKey: string, data: LocationMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/location'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -815,7 +743,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsLocationMessagePayload")
+            body: ObjectSerializer.serialize(data, "LocationMessagePayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -837,13 +765,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -859,7 +787,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendMediaPost (instanceKey: string, data: StructsSendMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendMediaPost (instanceKey: string, data: SendMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/media'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -894,7 +822,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsSendMediaPayload")
+            body: ObjectSerializer.serialize(data, "SendMediaPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -916,13 +844,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -933,12 +861,12 @@ export class MessageSendingApi {
         });
     }
     /**
-     * Sends an interactive poll message with a media header to the given user. The poll message is a new feature that is currently in beta.
-     * @summary Send a Poll message with media.
+     * Sends an interactive poll message to the given user. The poll message is a new feature that is currently in beta.
+     * @summary Send a Poll message.
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendPollPost (instanceKey: string, data: StructsPollMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendPollPost (instanceKey: string, data: PollMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/poll'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -973,7 +901,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsPollMessagePayload")
+            body: ObjectSerializer.serialize(data, "PollMessagePayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -995,13 +923,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1017,7 +945,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendTemplateMediaPost (instanceKey: string, data: StructsTemplateButtonWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendTemplateMediaPost (instanceKey: string, data: TemplateButtonWithMediaPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/template-media'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1052,7 +980,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsTemplateButtonWithMediaPayload")
+            body: ObjectSerializer.serialize(data, "TemplateButtonWithMediaPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1074,13 +1002,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1096,7 +1024,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendTemplatePost (instanceKey: string, data: StructsTemplateButtonPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendTemplatePost (instanceKey: string, data: TemplateButtonPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/template'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1131,7 +1059,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsTemplateButtonPayload")
+            body: ObjectSerializer.serialize(data, "TemplateButtonPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1153,13 +1081,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1175,7 +1103,7 @@ export class MessageSendingApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeySendTextPost (instanceKey: string, data: StructsTextMessage, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendTextPost (instanceKey: string, data: TextMessage, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/text'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1210,7 +1138,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsTextMessage")
+            body: ObjectSerializer.serialize(data, "TextMessage")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1232,13 +1160,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1255,7 +1183,7 @@ export class MessageSendingApi {
      * @param type Media type
      * @param instancesInstanceKeySendUploadPostRequest 
      */
-    public async instancesInstanceKeySendUploadPost (instanceKey: string, type: 'image' | 'video' | 'audio' | 'document', instancesInstanceKeySendUploadPostRequest: InstancesInstanceKeySendUploadPostRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendUploadPost (instanceKey: string, type: 'image' | 'video' | 'audio' | 'document', instancesInstanceKeySendUploadPostRequest: InstancesInstanceKeySendUploadPostRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/upload'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1321,13 +1249,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1345,7 +1273,7 @@ export class MessageSendingApi {
      * @param instancesInstanceKeySendVideoPostRequest 
      * @param caption Attached caption
      */
-    public async instancesInstanceKeySendVideoPost (instanceKey: string, to: string, instancesInstanceKeySendVideoPostRequest: InstancesInstanceKeySendVideoPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeySendVideoPost (instanceKey: string, to: string, instancesInstanceKeySendVideoPostRequest: InstancesInstanceKeySendVideoPostRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/video'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1415,13 +1343,13 @@ export class MessageSendingApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));

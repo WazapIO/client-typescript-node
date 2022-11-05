@@ -15,12 +15,12 @@ import localVarRequest from 'request';
 import http from 'http';
 
 /* tslint:disable:no-unused-locals */
+import { APIResponse } from '../models/aPIResponse';
+import { GroupCreatePayload } from '../models/groupCreatePayload';
+import { GroupUpdateDescriptionPayload } from '../models/groupUpdateDescriptionPayload';
+import { GroupUpdateNamePayload } from '../models/groupUpdateNamePayload';
+import { GroupUpdateParticipantsPayload } from '../models/groupUpdateParticipantsPayload';
 import { InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest } from '../models/instancesInstanceKeyGroupsGroupIdProfilePicPutRequest';
-import { MainAPIResponse } from '../models/mainAPIResponse';
-import { StructsGroupCreatePayload } from '../models/structsGroupCreatePayload';
-import { StructsGroupUpdateDescriptionPayload } from '../models/structsGroupUpdateDescriptionPayload';
-import { StructsGroupUpdateNamePayload } from '../models/structsGroupUpdateNamePayload';
-import { StructsGroupUpdateParticipantsPayload } from '../models/structsGroupUpdateParticipantsPayload';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
 import { HttpBasicAuth, HttpBearerAuth, ApiKeyAuth, OAuth } from '../model/models';
@@ -99,7 +99,7 @@ export class GroupManagementApi {
      * @summary Get admin groupss.
      * @param instanceKey Instance key
      */
-    public async instancesInstanceKeyGroupsAdminGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsAdminGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/admin'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -150,13 +150,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -172,7 +172,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param data Group create payload
      */
-    public async instancesInstanceKeyGroupsCreatePost (instanceKey: string, data: StructsGroupCreatePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsCreatePost (instanceKey: string, data: GroupCreatePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/create'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -207,7 +207,7 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsGroupCreatePayload")
+            body: ObjectSerializer.serialize(data, "GroupCreatePayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -229,13 +229,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -251,7 +251,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param includeParticipants Include participants data
      */
-    public async instancesInstanceKeyGroupsGet (instanceKey: string, includeParticipants?: 'false' | 'true', options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGet (instanceKey: string, includeParticipants?: 'false' | 'true', options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -306,13 +306,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -329,7 +329,7 @@ export class GroupManagementApi {
      * @param announce Announce status
      * @param groupId Group id of the group
      */
-    public async instancesInstanceKeyGroupsGroupIdAnnouncePut (instanceKey: string, announce: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdAnnouncePut (instanceKey: string, announce: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/announce'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'announce' + '}', encodeURIComponent(String(announce)))
@@ -392,13 +392,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -414,7 +414,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param groupId Group id of the group
      */
-    public async instancesInstanceKeyGroupsGroupIdDelete (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdDelete (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -471,13 +471,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -494,7 +494,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group description data
      */
-    public async instancesInstanceKeyGroupsGroupIdDescriptionPut (instanceKey: string, groupId: string, data: StructsGroupUpdateDescriptionPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdDescriptionPut (instanceKey: string, groupId: string, data: GroupUpdateDescriptionPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/description'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -535,7 +535,7 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsGroupUpdateDescriptionPayload")
+            body: ObjectSerializer.serialize(data, "GroupUpdateDescriptionPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -557,13 +557,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -579,7 +579,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param groupId Group id of the group
      */
-    public async instancesInstanceKeyGroupsGroupIdGet (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdGet (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -636,13 +636,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -658,7 +658,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param groupId Group id of the group
      */
-    public async instancesInstanceKeyGroupsGroupIdInviteCodeGet (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdInviteCodeGet (instanceKey: string, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/invite-code'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -715,13 +715,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -738,7 +738,7 @@ export class GroupManagementApi {
      * @param locked Locked status
      * @param groupId Group id of the group
      */
-    public async instancesInstanceKeyGroupsGroupIdLockPut (instanceKey: string, locked: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdLockPut (instanceKey: string, locked: boolean, groupId: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/lock'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'locked' + '}', encodeURIComponent(String(locked)))
@@ -801,13 +801,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -824,7 +824,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group name data
      */
-    public async instancesInstanceKeyGroupsGroupIdNamePut (instanceKey: string, groupId: string, data: StructsGroupUpdateNamePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdNamePut (instanceKey: string, groupId: string, data: GroupUpdateNamePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/name'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -865,7 +865,7 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsGroupUpdateNamePayload")
+            body: ObjectSerializer.serialize(data, "GroupUpdateNamePayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -887,13 +887,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -910,7 +910,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group update payload
      */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsAddPost (instanceKey: string, groupId: string, data: StructsGroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdParticipantsAddPost (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/add'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -951,7 +951,7 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsGroupUpdateParticipantsPayload")
+            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -973,13 +973,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -996,7 +996,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group update payload
      */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsDemotePut (instanceKey: string, groupId: string, data: StructsGroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdParticipantsDemotePut (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/demote'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -1037,7 +1037,7 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsGroupUpdateParticipantsPayload")
+            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1059,13 +1059,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1082,7 +1082,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group update payload
      */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsPromotePut (instanceKey: string, groupId: string, data: StructsGroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdParticipantsPromotePut (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/promote'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -1123,7 +1123,7 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsGroupUpdateParticipantsPayload")
+            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1145,13 +1145,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1168,7 +1168,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param data Group update payload
      */
-    public async instancesInstanceKeyGroupsGroupIdParticipantsRemoveDelete (instanceKey: string, groupId: string, data: StructsGroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdParticipantsRemoveDelete (instanceKey: string, groupId: string, data: GroupUpdateParticipantsPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/participants/remove'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -1209,7 +1209,7 @@ export class GroupManagementApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsGroupUpdateParticipantsPayload")
+            body: ObjectSerializer.serialize(data, "GroupUpdateParticipantsPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -1231,13 +1231,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1254,7 +1254,7 @@ export class GroupManagementApi {
      * @param groupId Group id of the group
      * @param instancesInstanceKeyGroupsGroupIdProfilePicPutRequest 
      */
-    public async instancesInstanceKeyGroupsGroupIdProfilePicPut (instanceKey: string, groupId: string, instancesInstanceKeyGroupsGroupIdProfilePicPutRequest: InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsGroupIdProfilePicPut (instanceKey: string, groupId: string, instancesInstanceKeyGroupsGroupIdProfilePicPutRequest: InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/{group_id}/profile-pic'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)))
             .replace('{' + 'group_id' + '}', encodeURIComponent(String(groupId)));
@@ -1317,13 +1317,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -1339,7 +1339,7 @@ export class GroupManagementApi {
      * @param instanceKey Instance key
      * @param inviteLink The invite link to check
      */
-    public async instancesInstanceKeyGroupsInviteInfoGet (instanceKey: string, inviteLink: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGroupsInviteInfoGet (instanceKey: string, inviteLink: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/groups/invite-info'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -1399,13 +1399,13 @@ export class GroupManagementApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));

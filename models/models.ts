@@ -1,35 +1,35 @@
 import localVarRequest from 'request';
 
+export * from './aPIResponse';
+export * from './buttonMessagePayload';
+export * from './buttonMessageWithMediaPayload';
+export * from './contactMessagePayload';
+export * from './contactMessagePayloadVcard';
+export * from './fileUpload';
+export * from './groupCreatePayload';
+export * from './groupUpdateDescriptionPayload';
+export * from './groupUpdateNamePayload';
+export * from './groupUpdateParticipantsPayload';
 export * from './instancesInstanceKeyGroupsGroupIdProfilePicPutRequest';
 export * from './instancesInstanceKeySendAudioPostRequest';
 export * from './instancesInstanceKeySendDocumentPostRequest';
 export * from './instancesInstanceKeySendImagePostRequest';
 export * from './instancesInstanceKeySendUploadPostRequest';
 export * from './instancesInstanceKeySendVideoPostRequest';
-export * from './mainAPIResponse';
-export * from './structsButtonMessagePayload';
-export * from './structsButtonMessageWithMediaPayload';
-export * from './structsContactMessagePayload';
-export * from './structsContactMessagePayloadVcard';
-export * from './structsFileUpload';
-export * from './structsGroupCreatePayload';
-export * from './structsGroupUpdateDescriptionPayload';
-export * from './structsGroupUpdateNamePayload';
-export * from './structsGroupUpdateParticipantsPayload';
-export * from './structsListItem';
-export * from './structsListMessagePayload';
-export * from './structsListSection';
-export * from './structsLocationMessagePayload';
-export * from './structsLocationMessagePayloadLocation';
-export * from './structsPollMessagePayload';
-export * from './structsReplyButton';
-export * from './structsSendMediaPayload';
-export * from './structsTemplateButton';
-export * from './structsTemplateButtonPayload';
-export * from './structsTemplateButtonWithMediaPayload';
-export * from './structsTextMessage';
-export * from './structsUserInfoPayload';
-export * from './structsWebhookPayload';
+export * from './listItem';
+export * from './listMessagePayload';
+export * from './listSection';
+export * from './locationMessagePayload';
+export * from './locationMessagePayloadLocation';
+export * from './pollMessagePayload';
+export * from './replyButton';
+export * from './sendMediaPayload';
+export * from './templateButton';
+export * from './templateButtonPayload';
+export * from './templateButtonWithMediaPayload';
+export * from './textMessage';
+export * from './userInfoPayload';
+export * from './webhookPayload';
 
 import * as fs from 'fs';
 
@@ -44,36 +44,36 @@ export interface RequestDetailedFile {
 export type RequestFile = string | Buffer | fs.ReadStream | RequestDetailedFile;
 
 
+import { APIResponse } from './aPIResponse';
+import { ButtonMessagePayload } from './buttonMessagePayload';
+import { ButtonMessageWithMediaPayload } from './buttonMessageWithMediaPayload';
+import { ContactMessagePayload } from './contactMessagePayload';
+import { ContactMessagePayloadVcard } from './contactMessagePayloadVcard';
+import { FileUpload } from './fileUpload';
+import { GroupCreatePayload } from './groupCreatePayload';
+import { GroupUpdateDescriptionPayload } from './groupUpdateDescriptionPayload';
+import { GroupUpdateNamePayload } from './groupUpdateNamePayload';
+import { GroupUpdateParticipantsPayload } from './groupUpdateParticipantsPayload';
 import { InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest } from './instancesInstanceKeyGroupsGroupIdProfilePicPutRequest';
 import { InstancesInstanceKeySendAudioPostRequest } from './instancesInstanceKeySendAudioPostRequest';
 import { InstancesInstanceKeySendDocumentPostRequest } from './instancesInstanceKeySendDocumentPostRequest';
 import { InstancesInstanceKeySendImagePostRequest } from './instancesInstanceKeySendImagePostRequest';
 import { InstancesInstanceKeySendUploadPostRequest } from './instancesInstanceKeySendUploadPostRequest';
 import { InstancesInstanceKeySendVideoPostRequest } from './instancesInstanceKeySendVideoPostRequest';
-import { MainAPIResponse } from './mainAPIResponse';
-import { StructsButtonMessagePayload } from './structsButtonMessagePayload';
-import { StructsButtonMessageWithMediaPayload } from './structsButtonMessageWithMediaPayload';
-import { StructsContactMessagePayload } from './structsContactMessagePayload';
-import { StructsContactMessagePayloadVcard } from './structsContactMessagePayloadVcard';
-import { StructsFileUpload } from './structsFileUpload';
-import { StructsGroupCreatePayload } from './structsGroupCreatePayload';
-import { StructsGroupUpdateDescriptionPayload } from './structsGroupUpdateDescriptionPayload';
-import { StructsGroupUpdateNamePayload } from './structsGroupUpdateNamePayload';
-import { StructsGroupUpdateParticipantsPayload } from './structsGroupUpdateParticipantsPayload';
-import { StructsListItem } from './structsListItem';
-import { StructsListMessagePayload } from './structsListMessagePayload';
-import { StructsListSection } from './structsListSection';
-import { StructsLocationMessagePayload } from './structsLocationMessagePayload';
-import { StructsLocationMessagePayloadLocation } from './structsLocationMessagePayloadLocation';
-import { StructsPollMessagePayload } from './structsPollMessagePayload';
-import { StructsReplyButton } from './structsReplyButton';
-import { StructsSendMediaPayload } from './structsSendMediaPayload';
-import { StructsTemplateButton } from './structsTemplateButton';
-import { StructsTemplateButtonPayload } from './structsTemplateButtonPayload';
-import { StructsTemplateButtonWithMediaPayload } from './structsTemplateButtonWithMediaPayload';
-import { StructsTextMessage } from './structsTextMessage';
-import { StructsUserInfoPayload } from './structsUserInfoPayload';
-import { StructsWebhookPayload } from './structsWebhookPayload';
+import { ListItem } from './listItem';
+import { ListMessagePayload } from './listMessagePayload';
+import { ListSection } from './listSection';
+import { LocationMessagePayload } from './locationMessagePayload';
+import { LocationMessagePayloadLocation } from './locationMessagePayloadLocation';
+import { PollMessagePayload } from './pollMessagePayload';
+import { ReplyButton } from './replyButton';
+import { SendMediaPayload } from './sendMediaPayload';
+import { TemplateButton } from './templateButton';
+import { TemplateButtonPayload } from './templateButtonPayload';
+import { TemplateButtonWithMediaPayload } from './templateButtonWithMediaPayload';
+import { TextMessage } from './textMessage';
+import { UserInfoPayload } from './userInfoPayload';
+import { WebhookPayload } from './webhookPayload';
 
 /* tslint:disable:no-unused-variable */
 let primitives = [
@@ -91,36 +91,36 @@ let enumsMap: {[index: string]: any} = {
 }
 
 let typeMap: {[index: string]: any} = {
+    "APIResponse": APIResponse,
+    "ButtonMessagePayload": ButtonMessagePayload,
+    "ButtonMessageWithMediaPayload": ButtonMessageWithMediaPayload,
+    "ContactMessagePayload": ContactMessagePayload,
+    "ContactMessagePayloadVcard": ContactMessagePayloadVcard,
+    "FileUpload": FileUpload,
+    "GroupCreatePayload": GroupCreatePayload,
+    "GroupUpdateDescriptionPayload": GroupUpdateDescriptionPayload,
+    "GroupUpdateNamePayload": GroupUpdateNamePayload,
+    "GroupUpdateParticipantsPayload": GroupUpdateParticipantsPayload,
     "InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest": InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest,
     "InstancesInstanceKeySendAudioPostRequest": InstancesInstanceKeySendAudioPostRequest,
     "InstancesInstanceKeySendDocumentPostRequest": InstancesInstanceKeySendDocumentPostRequest,
     "InstancesInstanceKeySendImagePostRequest": InstancesInstanceKeySendImagePostRequest,
     "InstancesInstanceKeySendUploadPostRequest": InstancesInstanceKeySendUploadPostRequest,
     "InstancesInstanceKeySendVideoPostRequest": InstancesInstanceKeySendVideoPostRequest,
-    "MainAPIResponse": MainAPIResponse,
-    "StructsButtonMessagePayload": StructsButtonMessagePayload,
-    "StructsButtonMessageWithMediaPayload": StructsButtonMessageWithMediaPayload,
-    "StructsContactMessagePayload": StructsContactMessagePayload,
-    "StructsContactMessagePayloadVcard": StructsContactMessagePayloadVcard,
-    "StructsFileUpload": StructsFileUpload,
-    "StructsGroupCreatePayload": StructsGroupCreatePayload,
-    "StructsGroupUpdateDescriptionPayload": StructsGroupUpdateDescriptionPayload,
-    "StructsGroupUpdateNamePayload": StructsGroupUpdateNamePayload,
-    "StructsGroupUpdateParticipantsPayload": StructsGroupUpdateParticipantsPayload,
-    "StructsListItem": StructsListItem,
-    "StructsListMessagePayload": StructsListMessagePayload,
-    "StructsListSection": StructsListSection,
-    "StructsLocationMessagePayload": StructsLocationMessagePayload,
-    "StructsLocationMessagePayloadLocation": StructsLocationMessagePayloadLocation,
-    "StructsPollMessagePayload": StructsPollMessagePayload,
-    "StructsReplyButton": StructsReplyButton,
-    "StructsSendMediaPayload": StructsSendMediaPayload,
-    "StructsTemplateButton": StructsTemplateButton,
-    "StructsTemplateButtonPayload": StructsTemplateButtonPayload,
-    "StructsTemplateButtonWithMediaPayload": StructsTemplateButtonWithMediaPayload,
-    "StructsTextMessage": StructsTextMessage,
-    "StructsUserInfoPayload": StructsUserInfoPayload,
-    "StructsWebhookPayload": StructsWebhookPayload,
+    "ListItem": ListItem,
+    "ListMessagePayload": ListMessagePayload,
+    "ListSection": ListSection,
+    "LocationMessagePayload": LocationMessagePayload,
+    "LocationMessagePayloadLocation": LocationMessagePayloadLocation,
+    "PollMessagePayload": PollMessagePayload,
+    "ReplyButton": ReplyButton,
+    "SendMediaPayload": SendMediaPayload,
+    "TemplateButton": TemplateButton,
+    "TemplateButtonPayload": TemplateButtonPayload,
+    "TemplateButtonWithMediaPayload": TemplateButtonWithMediaPayload,
+    "TextMessage": TextMessage,
+    "UserInfoPayload": UserInfoPayload,
+    "WebhookPayload": WebhookPayload,
 }
 
 export class ObjectSerializer {

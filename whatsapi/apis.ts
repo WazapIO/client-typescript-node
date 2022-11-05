@@ -1,3 +1,5 @@
+export * from './businessManagementApi';
+import { BusinessManagementApi } from './businessManagementApi';
 export * from './groupManagementApi';
 import { GroupManagementApi } from './groupManagementApi';
 export * from './instanceApi';
@@ -17,4 +19,4 @@ export class HttpError extends Error {
 
 export { RequestFile } from '../model/models';
 
-export const APIS = [GroupManagementApi, InstanceApi, MessageSendingApi, MiscellaneousApi];
+export const APIS = [BusinessManagementApi, GroupManagementApi, InstanceApi, MessageSendingApi, MiscellaneousApi];

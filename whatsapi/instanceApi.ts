@@ -15,8 +15,8 @@ import localVarRequest from 'request';
 import http from 'http';
 
 /* tslint:disable:no-unused-locals */
-import { MainAPIResponse } from '../models/mainAPIResponse';
-import { StructsWebhookPayload } from '../models/structsWebhookPayload';
+import { APIResponse } from '../models/aPIResponse';
+import { WebhookPayload } from '../models/webhookPayload';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
 import { HttpBasicAuth, HttpBearerAuth, ApiKeyAuth, OAuth } from '../model/models';
@@ -95,7 +95,7 @@ export class InstanceApi {
      * @summary Creates a new instance key.
      * @param instanceKey Insert instance key if you want to provide custom key
      */
-    public async instancesCreateGet (instanceKey?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesCreateGet (instanceKey?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/create';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
@@ -144,13 +144,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -165,7 +165,7 @@ export class InstanceApi {
      * @summary Get contacts.
      * @param instanceKey Instance key
      */
-    public async instancesInstanceKeyContactsGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyContactsGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/contacts'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -216,13 +216,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -237,7 +237,7 @@ export class InstanceApi {
      * @summary Delete Instance.
      * @param instanceKey Instance key
      */
-    public async instancesInstanceKeyDeleteDelete (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyDeleteDelete (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/delete'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -288,13 +288,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -309,7 +309,7 @@ export class InstanceApi {
      * @summary Get Instance.
      * @param instanceKey Instance key
      */
-    public async instancesInstanceKeyGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -360,13 +360,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -381,7 +381,7 @@ export class InstanceApi {
      * @summary Logout Instance.
      * @param instanceKey Instance key
      */
-    public async instancesInstanceKeyLogoutDelete (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyLogoutDelete (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/logout'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -432,13 +432,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -453,7 +453,7 @@ export class InstanceApi {
      * @summary Get QrCode.
      * @param instanceKey Instance key
      */
-    public async instancesInstanceKeyQrcodeGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyQrcodeGet (instanceKey: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/qrcode'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -504,13 +504,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -526,7 +526,7 @@ export class InstanceApi {
      * @param instanceKey Instance key
      * @param data Message data
      */
-    public async instancesInstanceKeyWebhookPut (instanceKey: string, data: StructsWebhookPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesInstanceKeyWebhookPut (instanceKey: string, data: WebhookPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/webhook'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -561,7 +561,7 @@ export class InstanceApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(data, "StructsWebhookPayload")
+            body: ObjectSerializer.serialize(data, "WebhookPayload")
         };
 
         let authenticationPromise = Promise.resolve();
@@ -583,13 +583,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
@@ -603,7 +603,7 @@ export class InstanceApi {
      * Fetches the list of all Instances with login status.
      * @summary Get all instances.
      */
-    public async instancesListGet (options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }> {
+    public async instancesListGet (options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/list';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
@@ -648,13 +648,13 @@ export class InstanceApi {
                     localVarRequestOptions.form = localVarFormParams;
                 }
             }
-            return new Promise<{ response: http.IncomingMessage; body: MainAPIResponse;  }>((resolve, reject) => {
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
                 localVarRequest(localVarRequestOptions, (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
                         if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                            body = ObjectSerializer.deserialize(body, "MainAPIResponse");
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
                             resolve({ response: response, body: body });
                         } else {
                             reject(new HttpError(response, body, response.statusCode));
