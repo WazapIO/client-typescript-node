@@ -19,17 +19,18 @@ import { APIResponse } from '../models/aPIResponse';
 import { ButtonMessagePayload } from '../models/buttonMessagePayload';
 import { ButtonMessageWithMediaPayload } from '../models/buttonMessageWithMediaPayload';
 import { ContactMessagePayload } from '../models/contactMessagePayload';
+import { GroupInviteMessagePayload } from '../models/groupInviteMessagePayload';
 import { ListMessagePayload } from '../models/listMessagePayload';
 import { LocationMessagePayload } from '../models/locationMessagePayload';
 import { PollMessagePayload } from '../models/pollMessagePayload';
 import { SendAudioRequest } from '../models/sendAudioRequest';
 import { SendDocumentRequest } from '../models/sendDocumentRequest';
-import { SendImageRequest } from '../models/sendImageRequest';
 import { SendMediaPayload } from '../models/sendMediaPayload';
 import { SendVideoRequest } from '../models/sendVideoRequest';
 import { TemplateButtonPayload } from '../models/templateButtonPayload';
 import { TemplateButtonWithMediaPayload } from '../models/templateButtonWithMediaPayload';
 import { TextMessage } from '../models/textMessage';
+import { UpdateProfilePicRequest } from '../models/updateProfilePicRequest';
 import { UploadMediaRequest } from '../models/uploadMediaRequest';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
@@ -530,14 +531,93 @@ export class MessageSendingApi {
         });
     }
     /**
+     * Sends a group invite message to the specified number. Don\'t include \"https://chat.whatsapp.com/\" in the invite code.
+     * @summary Send a group invite message
+     * @param instanceKey Instance key
+     * @param data Message data
+     */
+    public async sendGroupInvite (instanceKey: string, data: GroupInviteMessagePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/send/group-invite'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling sendGroupInvite.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling sendGroupInvite.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'POST',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(data, "GroupInviteMessagePayload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
      * Sends a image message by uploading to the WhatsApp servers every time. This is not recommended for bulk sending.
      * @summary Send raw image.
      * @param instanceKey Instance key
      * @param to The recipient\&#39;s number
-     * @param sendImageRequest 
+     * @param updateProfilePicRequest 
      * @param caption Attached caption
      */
-    public async sendImage (instanceKey: string, to: string, sendImageRequest: SendImageRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async sendImage (instanceKey: string, to: string, updateProfilePicRequest: UpdateProfilePicRequest, caption?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/{instance_key}/send/image'
             .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
         let localVarQueryParameters: any = {};
@@ -561,9 +641,9 @@ export class MessageSendingApi {
             throw new Error('Required parameter to was null or undefined when calling sendImage.');
         }
 
-        // verify required parameter 'sendImageRequest' is not null or undefined
-        if (sendImageRequest === null || sendImageRequest === undefined) {
-            throw new Error('Required parameter sendImageRequest was null or undefined when calling sendImage.');
+        // verify required parameter 'updateProfilePicRequest' is not null or undefined
+        if (updateProfilePicRequest === null || updateProfilePicRequest === undefined) {
+            throw new Error('Required parameter updateProfilePicRequest was null or undefined when calling sendImage.');
         }
 
         if (to !== undefined) {
@@ -585,7 +665,7 @@ export class MessageSendingApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(sendImageRequest, "SendImageRequest")
+            body: ObjectSerializer.serialize(updateProfilePicRequest, "UpdateProfilePicRequest")
         };
 
         let authenticationPromise = Promise.resolve();

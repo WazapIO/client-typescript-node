@@ -16,6 +16,8 @@ import http from 'http';
 
 /* tslint:disable:no-unused-locals */
 import { APIResponse } from '../models/aPIResponse';
+import { FileUpload } from '../models/fileUpload';
+import { UpdateProfilePicRequest } from '../models/updateProfilePicRequest';
 import { UserInfoPayload } from '../models/userInfoPayload';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
@@ -90,6 +92,100 @@ export class MiscellaneousApi {
         this.interceptors.push(interceptor);
     }
 
+    /**
+     * Downloads the media from the given media keys.
+     * @summary Download media
+     * @param instanceKey Instance key
+     * @param fileType File type
+     * @param data Media data
+     * @param responseType Response type (file, base64)
+     */
+    public async downloadMedia (instanceKey: string, fileType: 'image' | 'video' | 'audio' | 'document', data: FileUpload, responseType?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/misc/download'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling downloadMedia.');
+        }
+
+        // verify required parameter 'fileType' is not null or undefined
+        if (fileType === null || fileType === undefined) {
+            throw new Error('Required parameter fileType was null or undefined when calling downloadMedia.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling downloadMedia.');
+        }
+
+        if (fileType !== undefined) {
+            localVarQueryParameters['file_type'] = ObjectSerializer.serialize(fileType, "'image' | 'video' | 'audio' | 'document'");
+        }
+
+        if (responseType !== undefined) {
+            localVarQueryParameters['response_type'] = ObjectSerializer.serialize(responseType, "string");
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'POST',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(data, "FileUpload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
     /**
      * Returns the profile pic of the given user.
      * @summary Get profile pic.
@@ -214,6 +310,177 @@ export class MiscellaneousApi {
             useQuerystring: this._useQuerystring,
             json: true,
             body: ObjectSerializer.serialize(data, "UserInfoPayload")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Sets the presence of the given chat. (Typing, Recording, Paused) Options: typing, recording, paused
+     * @summary Set chat presence
+     * @param instanceKey Instance key
+     * @param jid JID
+     * @param presence Presence
+     */
+    public async setChatPresence (instanceKey: string, jid: string, presence: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/misc/chat-presence'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling setChatPresence.');
+        }
+
+        // verify required parameter 'jid' is not null or undefined
+        if (jid === null || jid === undefined) {
+            throw new Error('Required parameter jid was null or undefined when calling setChatPresence.');
+        }
+
+        // verify required parameter 'presence' is not null or undefined
+        if (presence === null || presence === undefined) {
+            throw new Error('Required parameter presence was null or undefined when calling setChatPresence.');
+        }
+
+        if (jid !== undefined) {
+            localVarQueryParameters['jid'] = ObjectSerializer.serialize(jid, "string");
+        }
+
+        if (presence !== undefined) {
+            localVarQueryParameters['presence'] = ObjectSerializer.serialize(presence, "string");
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'POST',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Changes the profile pic of the current logged in user.
+     * @summary Update profile picture
+     * @param instanceKey Instance key
+     * @param updateProfilePicRequest 
+     */
+    public async updateProfilePic (instanceKey: string, updateProfilePicRequest: UpdateProfilePicRequest, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/misc/profile-pic'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling updateProfilePic.');
+        }
+
+        // verify required parameter 'updateProfilePicRequest' is not null or undefined
+        if (updateProfilePicRequest === null || updateProfilePicRequest === undefined) {
+            throw new Error('Required parameter updateProfilePicRequest was null or undefined when calling updateProfilePic.');
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'PUT',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(updateProfilePicRequest, "UpdateProfilePicRequest")
         };
 
         let authenticationPromise = Promise.resolve();

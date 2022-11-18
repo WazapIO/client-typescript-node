@@ -7,6 +7,7 @@ export * from './contactMessagePayload';
 export * from './contactMessagePayloadVcard';
 export * from './fileUpload';
 export * from './groupCreatePayload';
+export * from './groupInviteMessagePayload';
 export * from './groupUpdateDescriptionPayload';
 export * from './groupUpdateNamePayload';
 export * from './groupUpdateParticipantsPayload';
@@ -15,11 +16,11 @@ export * from './listMessagePayload';
 export * from './listSection';
 export * from './locationMessagePayload';
 export * from './locationMessagePayloadLocation';
+export * from './paymentRequestPayload';
 export * from './pollMessagePayload';
 export * from './replyButton';
 export * from './sendAudioRequest';
 export * from './sendDocumentRequest';
-export * from './sendImageRequest';
 export * from './sendMediaPayload';
 export * from './sendVideoRequest';
 export * from './setGroupPictureRequest';
@@ -27,6 +28,7 @@ export * from './templateButton';
 export * from './templateButtonPayload';
 export * from './templateButtonWithMediaPayload';
 export * from './textMessage';
+export * from './updateProfilePicRequest';
 export * from './uploadMediaRequest';
 export * from './userInfoPayload';
 export * from './webhookPayload';
@@ -51,6 +53,7 @@ import { ContactMessagePayload } from './contactMessagePayload';
 import { ContactMessagePayloadVcard } from './contactMessagePayloadVcard';
 import { FileUpload } from './fileUpload';
 import { GroupCreatePayload } from './groupCreatePayload';
+import { GroupInviteMessagePayload } from './groupInviteMessagePayload';
 import { GroupUpdateDescriptionPayload } from './groupUpdateDescriptionPayload';
 import { GroupUpdateNamePayload } from './groupUpdateNamePayload';
 import { GroupUpdateParticipantsPayload } from './groupUpdateParticipantsPayload';
@@ -59,11 +62,11 @@ import { ListMessagePayload } from './listMessagePayload';
 import { ListSection } from './listSection';
 import { LocationMessagePayload } from './locationMessagePayload';
 import { LocationMessagePayloadLocation } from './locationMessagePayloadLocation';
+import { PaymentRequestPayload } from './paymentRequestPayload';
 import { PollMessagePayload } from './pollMessagePayload';
 import { ReplyButton } from './replyButton';
 import { SendAudioRequest } from './sendAudioRequest';
 import { SendDocumentRequest } from './sendDocumentRequest';
-import { SendImageRequest } from './sendImageRequest';
 import { SendMediaPayload } from './sendMediaPayload';
 import { SendVideoRequest } from './sendVideoRequest';
 import { SetGroupPictureRequest } from './setGroupPictureRequest';
@@ -71,6 +74,7 @@ import { TemplateButton } from './templateButton';
 import { TemplateButtonPayload } from './templateButtonPayload';
 import { TemplateButtonWithMediaPayload } from './templateButtonWithMediaPayload';
 import { TextMessage } from './textMessage';
+import { UpdateProfilePicRequest } from './updateProfilePicRequest';
 import { UploadMediaRequest } from './uploadMediaRequest';
 import { UserInfoPayload } from './userInfoPayload';
 import { WebhookPayload } from './webhookPayload';
@@ -98,6 +102,7 @@ let typeMap: {[index: string]: any} = {
     "ContactMessagePayloadVcard": ContactMessagePayloadVcard,
     "FileUpload": FileUpload,
     "GroupCreatePayload": GroupCreatePayload,
+    "GroupInviteMessagePayload": GroupInviteMessagePayload,
     "GroupUpdateDescriptionPayload": GroupUpdateDescriptionPayload,
     "GroupUpdateNamePayload": GroupUpdateNamePayload,
     "GroupUpdateParticipantsPayload": GroupUpdateParticipantsPayload,
@@ -106,11 +111,11 @@ let typeMap: {[index: string]: any} = {
     "ListSection": ListSection,
     "LocationMessagePayload": LocationMessagePayload,
     "LocationMessagePayloadLocation": LocationMessagePayloadLocation,
+    "PaymentRequestPayload": PaymentRequestPayload,
     "PollMessagePayload": PollMessagePayload,
     "ReplyButton": ReplyButton,
     "SendAudioRequest": SendAudioRequest,
     "SendDocumentRequest": SendDocumentRequest,
-    "SendImageRequest": SendImageRequest,
     "SendMediaPayload": SendMediaPayload,
     "SendVideoRequest": SendVideoRequest,
     "SetGroupPictureRequest": SetGroupPictureRequest,
@@ -118,6 +123,7 @@ let typeMap: {[index: string]: any} = {
     "TemplateButtonPayload": TemplateButtonPayload,
     "TemplateButtonWithMediaPayload": TemplateButtonWithMediaPayload,
     "TextMessage": TextMessage,
+    "UpdateProfilePicRequest": UpdateProfilePicRequest,
     "UploadMediaRequest": UploadMediaRequest,
     "UserInfoPayload": UserInfoPayload,
     "WebhookPayload": WebhookPayload,
