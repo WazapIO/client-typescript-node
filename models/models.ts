@@ -30,6 +30,7 @@ export * from './templateButtonWithMediaPayload';
 export * from './textMessage';
 export * from './updateProfilePicRequest';
 export * from './uploadMediaRequest';
+export * from './urlMediaUploadPayload';
 export * from './userInfoPayload';
 export * from './webhookPayload';
 
@@ -76,6 +77,7 @@ import { TemplateButtonWithMediaPayload } from './templateButtonWithMediaPayload
 import { TextMessage } from './textMessage';
 import { UpdateProfilePicRequest } from './updateProfilePicRequest';
 import { UploadMediaRequest } from './uploadMediaRequest';
+import { UrlMediaUploadPayload } from './urlMediaUploadPayload';
 import { UserInfoPayload } from './userInfoPayload';
 import { WebhookPayload } from './webhookPayload';
 
@@ -125,6 +127,7 @@ let typeMap: {[index: string]: any} = {
     "TextMessage": TextMessage,
     "UpdateProfilePicRequest": UpdateProfilePicRequest,
     "UploadMediaRequest": UploadMediaRequest,
+    "UrlMediaUploadPayload": UrlMediaUploadPayload,
     "UserInfoPayload": UserInfoPayload,
     "WebhookPayload": WebhookPayload,
 }

@@ -32,6 +32,7 @@ import { TemplateButtonWithMediaPayload } from '../models/templateButtonWithMedi
 import { TextMessage } from '../models/textMessage';
 import { UpdateProfilePicRequest } from '../models/updateProfilePicRequest';
 import { UploadMediaRequest } from '../models/uploadMediaRequest';
+import { UrlMediaUploadPayload } from '../models/urlMediaUploadPayload';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
 import { HttpBasicAuth, HttpBearerAuth, ApiKeyAuth, OAuth } from '../model/models';
@@ -1402,6 +1403,95 @@ export class MessageSendingApi {
             useQuerystring: this._useQuerystring,
             json: true,
             body: ObjectSerializer.serialize(uploadMediaRequest, "UploadMediaRequest")
+        };
+
+        let authenticationPromise = Promise.resolve();
+        if (this.authentications.ApiKeyAuth.apiKey) {
+            authenticationPromise = authenticationPromise.then(() => this.authentications.ApiKeyAuth.applyToRequest(localVarRequestOptions));
+        }
+        authenticationPromise = authenticationPromise.then(() => this.authentications.default.applyToRequest(localVarRequestOptions));
+
+        let interceptorPromise = authenticationPromise;
+        for (const interceptor of this.interceptors) {
+            interceptorPromise = interceptorPromise.then(() => interceptor(localVarRequestOptions));
+        }
+
+        return interceptorPromise.then(() => {
+            if (Object.keys(localVarFormParams).length) {
+                if (localVarUseFormData) {
+                    (<any>localVarRequestOptions).formData = localVarFormParams;
+                } else {
+                    localVarRequestOptions.form = localVarFormParams;
+                }
+            }
+            return new Promise<{ response: http.IncomingMessage; body: APIResponse;  }>((resolve, reject) => {
+                localVarRequest(localVarRequestOptions, (error, response, body) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+                            body = ObjectSerializer.deserialize(body, "APIResponse");
+                            resolve({ response: response, body: body });
+                        } else {
+                            reject(new HttpError(response, body, response.statusCode));
+                        }
+                    }
+                });
+            });
+        });
+    }
+    /**
+     * Uploads media from a url to WhatsApp servers and returns the media keys. Store the returned media keys, as you will need them to send media messages
+     * @summary Upload media from url.
+     * @param instanceKey Instance key
+     * @param type Media type
+     * @param data Media data
+     */
+    public async uploadMediaFromUrl (instanceKey: string, type: 'image' | 'video' | 'audio' | 'document', data: UrlMediaUploadPayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+        const localVarPath = this.basePath + '/instances/{instance_key}/send/upload-url'
+            .replace('{' + 'instance_key' + '}', encodeURIComponent(String(instanceKey)));
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
+        const produces = ['*/*'];
+        // give precedence to 'application/json'
+        if (produces.indexOf('application/json') >= 0) {
+            localVarHeaderParams.Accept = 'application/json';
+        } else {
+            localVarHeaderParams.Accept = produces.join(',');
+        }
+        let localVarFormParams: any = {};
+
+        // verify required parameter 'instanceKey' is not null or undefined
+        if (instanceKey === null || instanceKey === undefined) {
+            throw new Error('Required parameter instanceKey was null or undefined when calling uploadMediaFromUrl.');
+        }
+
+        // verify required parameter 'type' is not null or undefined
+        if (type === null || type === undefined) {
+            throw new Error('Required parameter type was null or undefined when calling uploadMediaFromUrl.');
+        }
+
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling uploadMediaFromUrl.');
+        }
+
+        if (type !== undefined) {
+            localVarQueryParameters['type'] = ObjectSerializer.serialize(type, "'image' | 'video' | 'audio' | 'document'");
+        }
+
+        (<any>Object).assign(localVarHeaderParams, options.headers);
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
+            method: 'POST',
+            qs: localVarQueryParameters,
+            headers: localVarHeaderParams,
+            uri: localVarPath,
+            useQuerystring: this._useQuerystring,
+            json: true,
+            body: ObjectSerializer.serialize(data, "UrlMediaUploadPayload")
         };
 
         let authenticationPromise = Promise.resolve();
