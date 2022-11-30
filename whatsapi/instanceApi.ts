@@ -16,6 +16,7 @@ import http from 'http';
 
 /* tslint:disable:no-unused-locals */
 import { APIResponse } from '../models/aPIResponse';
+import { CreateInstancePayload } from '../models/createInstancePayload';
 import { WebhookPayload } from '../models/webhookPayload';
 
 import { ObjectSerializer, Authentication, VoidAuth, Interceptor } from '../model/models';
@@ -172,9 +173,9 @@ export class InstanceApi {
     /**
      * This endpoint is used to create a new WhatsApp Web instance.
      * @summary Creates a new instance key.
-     * @param instanceKey Insert instance key if you want to provide custom key
+     * @param data Instance data
      */
-    public async createInstance (instanceKey?: string, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
+    public async createInstance (data: CreateInstancePayload, options: {headers: {[name: string]: string}} = {headers: {}}) : Promise<{ response: http.IncomingMessage; body: APIResponse;  }> {
         const localVarPath = this.basePath + '/instances/create';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this._defaultHeaders);
@@ -187,8 +188,9 @@ export class InstanceApi {
         }
         let localVarFormParams: any = {};
 
-        if (instanceKey !== undefined) {
-            localVarQueryParameters['instance_key'] = ObjectSerializer.serialize(instanceKey, "string");
+        // verify required parameter 'data' is not null or undefined
+        if (data === null || data === undefined) {
+            throw new Error('Required parameter data was null or undefined when calling createInstance.');
         }
 
         (<any>Object).assign(localVarHeaderParams, options.headers);
@@ -196,12 +198,13 @@ export class InstanceApi {
         let localVarUseFormData = false;
 
         let localVarRequestOptions: localVarRequest.Options = {
-            method: 'GET',
+            method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
+            body: ObjectSerializer.serialize(data, "CreateInstancePayload")
         };
 
         let authenticationPromise = Promise.resolve();

@@ -5,6 +5,7 @@ export * from './buttonMessagePayload';
 export * from './buttonMessageWithMediaPayload';
 export * from './contactMessagePayload';
 export * from './contactMessagePayloadVcard';
+export * from './createInstancePayload';
 export * from './fileUpload';
 export * from './groupCreatePayload';
 export * from './groupInviteMessagePayload';
@@ -52,6 +53,7 @@ import { ButtonMessagePayload } from './buttonMessagePayload';
 import { ButtonMessageWithMediaPayload } from './buttonMessageWithMediaPayload';
 import { ContactMessagePayload } from './contactMessagePayload';
 import { ContactMessagePayloadVcard } from './contactMessagePayloadVcard';
+import { CreateInstancePayload } from './createInstancePayload';
 import { FileUpload } from './fileUpload';
 import { GroupCreatePayload } from './groupCreatePayload';
 import { GroupInviteMessagePayload } from './groupInviteMessagePayload';
@@ -102,6 +104,7 @@ let typeMap: {[index: string]: any} = {
     "ButtonMessageWithMediaPayload": ButtonMessageWithMediaPayload,
     "ContactMessagePayload": ContactMessagePayload,
     "ContactMessagePayloadVcard": ContactMessagePayloadVcard,
+    "CreateInstancePayload": CreateInstancePayload,
     "FileUpload": FileUpload,
     "GroupCreatePayload": GroupCreatePayload,
     "GroupInviteMessagePayload": GroupInviteMessagePayload,
